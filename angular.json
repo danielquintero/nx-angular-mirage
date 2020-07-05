@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "projects": {
+    "mirage-cypress-example": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/mirage-cypress-example",
+      "sourceRoot": "apps/mirage-cypress-example/src",
+      "prefix": "mirage",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/mirage-cypress-example",
+            "index": "apps/mirage-cypress-example/src/index.html",
+            "main": "apps/mirage-cypress-example/src/main.ts",
+            "polyfills": "apps/mirage-cypress-example/src/polyfills.ts",
+            "tsConfig": "apps/mirage-cypress-example/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/mirage-cypress-example/src/favicon.ico",
+              "apps/mirage-cypress-example/src/assets"
+            ],
+            "styles": ["apps/mirage-cypress-example/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/mirage-cypress-example/src/environments/environment.ts",
+                  "with": "apps/mirage-cypress-example/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "mirage-cypress-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "mirage-cypress-example:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "mirage-cypress-example:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/mirage-cypress-example/tsconfig.app.json",
+              "apps/mirage-cypress-example/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/mirage-cypress-example/**/*"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/mirage-cypress-example/jest.config.js",
+            "tsConfig": "apps/mirage-cypress-example/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/mirage-cypress-example/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "mirage-cypress-example-e2e": {
+      "root": "apps/mirage-cypress-example-e2e",
+      "sourceRoot": "apps/mirage-cypress-example-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/mirage-cypress-example-e2e/cypress.json",
+            "tsConfig": "apps/mirage-cypress-example-e2e/tsconfig.e2e.json",
+            "devServerTarget": "mirage-cypress-example:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "mirage-cypress-example:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/mirage-cypress-example-e2e/tsconfig.e2e.json"],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/mirage-cypress-example-e2e/**/*"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "mirage-cypress-example"
+}
