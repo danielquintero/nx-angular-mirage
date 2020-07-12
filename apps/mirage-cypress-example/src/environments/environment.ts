@@ -2,9 +2,16 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { makeServer } from '@mirage/shared/mirage';
+
 export const environment = {
   production: false,
 };
+
+// development purposes only, for e2e we create mirage server explicitly
+if (!(window as any).Cypress) {
+  makeServer();
+}
 
 /*
  * For easier debugging in development mode, you can import the following file

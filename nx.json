@@ -28,6 +28,9 @@
     "mirage-cypress-example-e2e": {
       "tags": [],
       "implicitDependencies": ["mirage-cypress-example"]
+    },
+    "shared-mirage": {
+      "tags": ["scope:shared", "type:util"]
     }
   }
 }

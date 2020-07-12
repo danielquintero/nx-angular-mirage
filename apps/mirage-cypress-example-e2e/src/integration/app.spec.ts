@@ -1,13 +1,20 @@
-import { getGreeting } from '../support/app.po';
+import { Server } from 'miragejs';
+
+import { makeServer } from '@mirage/shared/mirage';
+import { sharedScenario } from '@mirage/shared/mirage';
+
+let server: Server;
 
 describe('mirage-cypress-example', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => {
+    server = makeServer({ environment: 'test' });
+    sharedScenario(server);
+    cy.visit('/');
+  });
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
-
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to mirage-cypress-example!');
+  it('should display users list', () => {
+    cy.get('[data-cy=user-list]').should('have.length', 2);
+    cy.get('[data-cy=user-list]').contains('John');
+    cy.get('[data-cy=user-list]').contains('Jane');
   });
 });

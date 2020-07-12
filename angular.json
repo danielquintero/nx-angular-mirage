@@ -58,7 +58,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mirage-cypress-example:build"
+            "browserTarget": "mirage-cypress-example:build",
+            "port":5000
           },
           "configurations": {
             "production": {
@@ -125,6 +126,34 @@
           }
         }
       }
+    },
+    "shared-mirage": {
+      "projectType": "library",
+      "root": "libs/shared/mirage",
+      "sourceRoot": "libs/shared/mirage/src",
+      "prefix": "mirage",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/shared/mirage/tsconfig.lib.json",
+              "libs/shared/mirage/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared/mirage/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared/mirage/jest.config.js",
+            "tsConfig": "libs/shared/mirage/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/shared/mirage/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {

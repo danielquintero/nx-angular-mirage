@@ -15,3 +15,26 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+import { Response } from 'node-fetch';
+
+Cypress.on('window:before:load', (win) => {
+  (win as any).handleFromCypress = function (request) {
+    return fetch(request.url, {
+      method: request.method,
+      headers: request.requestHeaders,
+      body: request.requestBody,
+    }).then(
+      (res: Response): Promise<Response> => {
+        const content =
+          res.headers.map['content-type'] === 'application/json'
+            ? res.json()
+            : res.text();
+        return new Promise((resolve) => {
+          content.then((body) => {
+            return resolve([res.status, res.headers, body]);
+          });
+        });
+      }
+    );
+  };
+});
